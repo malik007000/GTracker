@@ -33,3 +33,7 @@ Thumbs.db
 # Misc
 *.log
 *.tmp" > .gitignore
+# Service Account Keys
+serviceAccountKey.json
+**/serviceAccountKey.json
+server/serviceAccountKey.json
