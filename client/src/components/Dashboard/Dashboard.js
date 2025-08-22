@@ -135,11 +135,10 @@ const Dashboard = () => {
   };
 
   const getTodaysGoals = () => {
-    const today = new Date();
-    return getTodaysGoalsForDate(goals, today);
+    return getTodaysGoalsForDate(goals, selectedDate);
   };
 
-  const markGoalComplete = async (goalId, date = new Date()) => {
+  const markGoalComplete = async (goalId, date = selectedDate) => {
     const dateString = date.toDateString();
     
     // Check if already completed
@@ -181,7 +180,7 @@ const Dashboard = () => {
     }
   };
 
-  const markGoalIncomplete = async (goalId, date = new Date()) => {
+  const markGoalIncomplete = async (goalId, date = selectedDate) => {
     const dateString = date.toDateString();
     
     try {
@@ -215,15 +214,15 @@ const Dashboard = () => {
   };
 
   const markPrayerComplete = async (prayerId) => {
-    const today = new Date().toDateString();
-    const prayerKey = `${prayerId}_${today}`;
+    const selectedDateString = selectedDate.toDateString();
+    const prayerKey = `${prayerId}_${selectedDateString}`;
     
     try {
-      const newCompletedPrayers = [...(completedPrayers[today] || []), prayerKey];
+      const newCompletedPrayers = [...(completedPrayers[selectedDateString] || []), prayerKey];
       
       const updatedPrayers = {
         ...completedPrayers,
-        [today]: newCompletedPrayers
+        [selectedDateString]: newCompletedPrayers
       };
       
       // Update user profile with prayer completions
@@ -240,15 +239,15 @@ const Dashboard = () => {
   };
 
   const markPrayerIncomplete = async (prayerId) => {
-    const today = new Date().toDateString();
-    const prayerKey = `${prayerId}_${today}`;
+    const selectedDateString = selectedDate.toDateString();
+    const prayerKey = `${prayerId}_${selectedDateString}`;
     
     try {
-      const newCompletedPrayers = (completedPrayers[today] || []).filter(p => p !== prayerKey);
+      const newCompletedPrayers = (completedPrayers[selectedDateString] || []).filter(p => p !== prayerKey);
       
       const updatedPrayers = {
         ...completedPrayers,
-        [today]: newCompletedPrayers
+        [selectedDateString]: newCompletedPrayers
       };
       
       await updateDoc(doc(db, 'users', user.uid), {
@@ -294,7 +293,7 @@ const Dashboard = () => {
 
   const getTodayStats = () => {
     const todaysGoals = getTodaysGoals();
-    const today = new Date().toDateString();
+    const selectedDateString = selectedDate.toDateString();
     
     let completed = 0;
     let total = 0;
@@ -302,15 +301,15 @@ const Dashboard = () => {
     todaysGoals.forEach(goal => {
       if (goal.type === 'prayer_group') {
         // For prayer groups, count individual prayers
-        const prayersToday = completedPrayers[today] || [];
-        const todayPrayers = goal.prayers?.filter(prayer => 
-          prayersToday.includes(`${prayer.id}_${today}`)
+        const prayersSelected = completedPrayers[selectedDateString] || [];
+        const selectedPrayers = goal.prayers?.filter(prayer => 
+          prayersSelected.includes(`${prayer.id}_${selectedDateString}`)
         ).length || 0;
-        completed += todayPrayers;
+        completed += selectedPrayers;
         total += goal.prayers?.length || 0;
       } else {
         // For regular goals
-        if (goal.completedDates?.includes(today)) {
+        if (goal.completedDates?.includes(selectedDateString)) {
           completed++;
         }
         total++;
@@ -334,6 +333,26 @@ const Dashboard = () => {
     });
     
     return totalCompleted;
+  };
+
+  // Handle date selection from calendar
+  const handleDateSelect = (date) => {
+    setSelectedDate(date);
+  };
+
+  // Check if selected date is today
+  const isSelectedDateToday = () => {
+    const today = new Date();
+    return selectedDate.toDateString() === today.toDateString();
+  };
+
+  // Check if selected date is in the past
+  const isSelectedDatePast = () => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const selected = new Date(selectedDate);
+    selected.setHours(0, 0, 0, 0);
+    return selected < today;
   };
 
   const stats = getTodayStats();
@@ -388,7 +407,9 @@ const Dashboard = () => {
             </svg>
             <div className="progress-text">
               <span className="percentage">{stats.percentage}%</span>
-              <span className="label">Today</span>
+              <span className="label">
+                {isSelectedDateToday() ? 'Today' : format(selectedDate, 'MMM d')}
+              </span>
             </div>
           </div>
         </div>
@@ -398,10 +419,10 @@ const Dashboard = () => {
             {stats.percentage === 100 ? (
               <>
                 <FiAward style={{color: '#ffe66d', marginRight: '5px'}} />
-                Perfect day!
+                {isSelectedDateToday() ? 'Perfect day!' : 'Perfect day achieved!'}
               </>
             ) : (
-              'Keep going!'
+              isSelectedDateToday() ? 'Keep going!' : `${stats.percentage}% completed`
             )}
           </p>
         </div>
@@ -453,7 +474,7 @@ const Dashboard = () => {
           <Calendar 
             goals={goals}
             completedGoals={completedGoals}
-            onDateSelect={setSelectedDate}
+            onDateSelect={handleDateSelect}
             selectedDate={selectedDate}
           />
         </div>
@@ -462,7 +483,12 @@ const Dashboard = () => {
       <div className="goals-section">
         <h2>
           <FiTarget style={{marginRight: '5px'}} />
-          Today's Goals ({format(new Date(), 'MMMM d, yyyy')})
+          {isSelectedDateToday() ? "Today's Goals" : "Goals for"} ({format(selectedDate, 'MMMM d, yyyy')})
+          {isSelectedDatePast() && (
+            <span style={{color: '#ffc107', fontSize: '0.8em', marginLeft: '10px'}}>
+              (Historical View - Read Only)
+            </span>
+          )}
         </h2>
         {todaysGoals.length === 0 ? (
           <div className="no-goals">
@@ -478,18 +504,21 @@ const Dashboard = () => {
                 <PrayerGroup
                   key={goal.id}
                   goal={goal}
-                  completedPrayers={completedPrayers[new Date().toDateString()] || []}
+                  completedPrayers={completedPrayers[selectedDate.toDateString()] || []}
                   onPrayerComplete={markPrayerComplete}
                   onPrayerIncomplete={markPrayerIncomplete}
+                  selectedDate={selectedDate}
+                  readOnly={isSelectedDatePast()}
                 />
               ) : (
                 <GoalCard
                   key={goal.id}
                   goal={goal}
-                  completed={goal.completedDates?.includes(new Date().toDateString())}
+                  completed={goal.completedDates?.includes(selectedDate.toDateString())}
                   onComplete={() => markGoalComplete(goal.id)}
                   onIncomplete={() => markGoalIncomplete(goal.id)}
                   selectedDate={selectedDate}
+                  readOnly={isSelectedDatePast()}
                 />
               )
             ))}
@@ -509,8 +538,6 @@ const Dashboard = () => {
       {showGoalManager && (
         <GoalManager onClose={() => setShowGoalManager(false)} />
       )}
-      
-      
     </div>
   );
 };

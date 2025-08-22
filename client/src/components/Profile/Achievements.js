@@ -1,7 +1,6 @@
-import React from 'react';
-import { FaFire } from 'react-icons/fa';
-import { FiTrendingUp, FiCalendar } from 'react-icons/fi';
-
+import React from 'react'; 
+import { FaFire, FaStar } from 'react-icons/fa';
+import { FiTrendingUp, FiCalendar, FiTarget } from 'react-icons/fi';
 
 const Achievements = ({ userProfile }) => {
   const calculateAchievements = () => {
@@ -14,66 +13,75 @@ const Achievements = ({ userProfile }) => {
     const maxCurrentStreak = Math.max(...goals.map(g => g.currentStreak || 0));
     const maxLongestStreak = Math.max(...goals.map(g => g.longestStreak || 0));
 
-    if (maxCurrentStreak >= 3) achievements.push({
-      id: 'streak_3',
-      title: '3-Day Warrior',
-      description: 'Maintained a 3-day streak',
-      icon: <FaFire />,
-      type: 'streak',
-      unlocked: true
-    });
+    if (maxCurrentStreak >= 3)
+      achievements.push({
+        id: 'streak_3',
+        title: '3-Day Warrior',
+        description: 'Maintained a 3-day streak',
+        icon: <FaFire />,
+        type: 'streak',
+        unlocked: true
+      });
 
-    if (maxCurrentStreak >= 7) achievements.push({
-      id: 'streak_7',
-      title: '7-Day Champion',
-      description: 'Achieved a 7-day streak',
-      icon: <FaFire />,
-      type: 'streak',
-      unlocked: true
-    });
+    if (maxCurrentStreak >= 7)
+      achievements.push({
+        id: 'streak_7',
+        title: '7-Day Champion',
+        description: 'Achieved a 7-day streak',
+        icon: <FaFire />,
+        type: 'streak',
+        unlocked: true
+      });
 
-    if (maxCurrentStreak >= 30) achievements.push({
-      id: 'streak_30',
-      title: '30-Day Legend',
-      description: 'Completed a 30-day streak',
-      icon: <FaFire />,
-      type: 'streak',
-      unlocked: true
-    });
+    if (maxCurrentStreak >= 30)
+      achievements.push({
+        id: 'streak_30',
+        title: '30-Day Legend',
+        description: 'Completed a 30-day streak',
+        icon: <FaFire />,
+        type: 'streak',
+        unlocked: true
+      });
 
-    if (maxLongestStreak >= 90) achievements.push({
-      id: 'streak_90',
-      title: '90-Day Master',
-      description: 'Achieved a 90-day streak',
-      icon: <FaFire />,
-      type: 'streak',
-      unlocked: true
-    });
+    if (maxLongestStreak >= 90)
+      achievements.push({
+        id: 'streak_90',
+        title: '90-Day Master',
+        description: 'Achieved a 90-day streak',
+        icon: <FaFire />,
+        type: 'streak',
+        unlocked: true
+      });
 
     // Goal completion achievements
-    const totalCompleted = goals.reduce((sum, goal) => sum + (goal.completedDates?.length || 0), 0);
+    const totalCompleted = goals.reduce(
+      (sum, goal) => sum + (goal.completedDates?.length || 0),
+      0
+    );
 
-    if (totalCompleted >= 50) achievements.push({
-      id: 'completed_50',
-      title: 'Goal Crusher',
-      description: 'Completed 50 goals',
-      icon: <FiTarget />,
-      type: 'completion',
-      unlocked: true
-    });
+    if (totalCompleted >= 50)
+      achievements.push({
+        id: 'completed_50',
+        title: 'Goal Crusher',
+        description: 'Completed 50 goals',
+        icon: <FiTarget />,
+        type: 'completion',
+        unlocked: true
+      });
 
-    if (totalCompleted >= 100) achievements.push({
-      id: 'completed_100',
-      title: 'Century Achiever',
-      description: 'Completed 100 goals',
-      icon: <FiTarget />,
-      type: 'completion',
-      unlocked: true
-    });
+    if (totalCompleted >= 100)
+      achievements.push({
+        id: 'completed_100',
+        title: 'Century Achiever',
+        description: 'Completed 100 goals',
+        icon: <FiTarget />,
+        type: 'completion',
+        unlocked: true
+      });
 
     // Perfect day achievements
     const today = new Date().toDateString();
-    const completedToday = goals.filter(goal => 
+    const completedToday = goals.filter(goal =>
       goal.completedDates?.includes(today)
     ).length;
 
@@ -141,12 +149,18 @@ const Achievements = ({ userProfile }) => {
 
   const getAchievementColor = (type) => {
     switch (type) {
-      case 'streak': return '#ff6b6b';
-      case 'completion': return '#4ecdc4';
-      case 'special': return '#ffe66d';
-      case 'consistency': return '#a8e6cf';
-      case 'social': return '#ff8b94';
-      default: return '#95a5a6';
+      case 'streak':
+        return '#ff6b6b';
+      case 'completion':
+        return '#4ecdc4';
+      case 'special':
+        return '#ffe66d';
+      case 'consistency':
+        return '#a8e6cf';
+      case 'social':
+        return '#ff8b94';
+      default:
+        return '#95a5a6';
     }
   };
 
@@ -159,7 +173,7 @@ const Achievements = ({ userProfile }) => {
 
       <div className="achievements-progress">
         <div className="progress-bar">
-          <div 
+          <div
             className="progress-fill"
             style={{ width: `${(unlockedCount / achievements.length) * 100}%` }}
           />
@@ -168,14 +182,14 @@ const Achievements = ({ userProfile }) => {
 
       <div className="achievements-grid">
         {achievements.map(achievement => (
-          <div 
+          <div
             key={achievement.id}
             className={`achievement-card ${achievement.unlocked ? 'unlocked' : 'locked'}`}
             style={{
               borderColor: achievement.unlocked ? getAchievementColor(achievement.type) : '#666'
             }}
           >
-            <div 
+            <div
               className="achievement-icon"
               style={{
                 color: achievement.unlocked ? getAchievementColor(achievement.type) : '#666'

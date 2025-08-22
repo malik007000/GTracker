@@ -29,6 +29,10 @@ const Calendar = ({ goals, completedGoals, onDateSelect, selectedDate }) => {
     return totalGoals > 0 ? Math.round((completedCount / totalGoals) * 100) : 0;
   };
 
+  const handleDateClick = (date) => {
+    onDateSelect(date);
+  };
+
   return (
     <div className="calendar">
       <div className="calendar-header">
@@ -62,7 +66,8 @@ const Calendar = ({ goals, completedGoals, onDateSelect, selectedDate }) => {
               } ${
                 !isSameMonth(date, currentMonth) ? 'other-month' : ''
               }`}
-              onClick={() => onDateSelect(date)}
+              onClick={() => handleDateClick(date)}
+              style={{ cursor: 'pointer' }}
             >
               <span className="day-number">{format(date, 'd')}</span>
               {percentage > 0 && (
