@@ -1,8 +1,5 @@
 # 🎯 GTracker - Personal Goal Achievement & Habit Tracking Platform
 
-[
-[
-[![Firebase](https://img.shields.io/badge/Firebasempowers users to track personal goals, build lasting habits, and visualize their progress journey with real-time data synchronization and comprehensive analytics.
 
 ## 🌟 What Makes GTracker Special
 
@@ -63,7 +60,7 @@
 
 ## 🚀 Live Demo & Screenshots
 
-**Experience GTracker**: [https://g-tracker-five.vercel.app/](https://g-tracker-five.vercel.app/)
+**Experience GTracker**: [https://g-tracker-five.vercel.app/](https://g-tracker-zxvf.vercel.app)
 
 *Create a free account to explore all features including goal creation, progress tracking, achievements, and historical data analysis.*
 
@@ -240,12 +237,12 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 ## 👨‍💻 About the Developer
 
-**Malik Hassan** - Full-Stack Developer & Goal Achievement Enthusiast
+**Mirshan Malik** - Full-Stack Developer & Goal Achievement Enthusiast
 
 - 🌐 **Portfolio**: [Your Portfolio Website]
 - 💼 **LinkedIn**: [Your LinkedIn Profile]  
 - 📧 **Email**: [Your Professional Email]
-- 🐦 **Twitter**: [Your Twitter Handle]
+
 
 ### **Why I Built GTracker**
 "I created GTracker because I believe in the power of consistent daily actions to transform lives. This project combines my passion for clean code with my commitment to helping people achieve their personal goals through technology."
@@ -275,7 +272,7 @@ If GTracker has helped you achieve your goals or inspired your development journ
 
 **Built with ❤️ for goal achievers everywhere**
 
-[🚀 **Try GTracker Now**](https://g-tracker-five.vercel.app/) | [📖 **Read the Docs**](./README.md) | [🐛 **Report Issues**](https://github.com/malik007000/GTracker/issues)
+[🚀 **Try GTracker Now**](https://g-tracker-zxvf.vercel.app) | [📖 **Read the Docs**](./README.md) | [🐛 **Report Issues**](https://github.com/malik007000/GTracker/issues)
 
 *Start your goal achievement journey today and turn your aspirations into consistent daily actions!*
 
