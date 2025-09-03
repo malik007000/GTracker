@@ -239,9 +239,9 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 **Mirshan Malik** - Full-Stack Developer & Goal Achievement Enthusiast
 
-- 🌐 **Portfolio**: [Your Portfolio Website]
-- 💼 **LinkedIn**: [Your LinkedIn Profile]  
-- 📧 **Email**: [Your Professional Email]
+- 🌐 **Portfolio**: Coming Soon....
+- 💼 **LinkedIn**: www.linkedin.com/in/mirshan-malik 
+- 📧 **Email**: mirshanmalik@gmail.com
 
 
 ### **Why I Built GTracker**
